@@ -1,2 +1,3 @@
-# leetcode_record
-leetcode
+# 力扣记录
+
+哎，以前写的没有记录，都木有了
