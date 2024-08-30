@@ -41,8 +41,11 @@ public class CopyGoodSolution {
         }
 
         if (activeTupleLength == 2) {
-            // 为了防止重复答案，同样的元素放在前面解
-            if (!checkSame && activeLength != nums.length && nums[activeLength] == nums[activeLength - 1]) {
+            if (!checkSame) {
+                return;
+            }
+
+            if (activeLength <= nums.length - 2 && nums[activeLength + 1] == nums[activeLength]) {
                 return;
             }
 
@@ -53,8 +56,10 @@ public class CopyGoodSolution {
 
         // 子串的每个元素加起来是否等于target
         if (activeLength == activeTupleLength) {
-            // 为了防止重复答案，同样的元素放在后面解
-            if (!checkSame && activeLength != nums.length && nums[activeLength] == nums[activeLength - 1]) {
+            // 为了防止重复答案，当前字串最后一个元素如果和再后一个元素相同，会取后一个元素，所有这里直接return，递归后会由nums[activeLength]执行method(n - 1, k - 1)出结果
+            // 举个例子，加入现在是[a, b, c, c]，取3个，当第一次执行method(n - 1, k)时，发现nums[n - 1 = 3] = c == nums[n - 1 - 1 = 2] = c
+            // 这个时候直接返回，会执行method(n - 1, k - 1)，就会执行上面的方法[a, b, c]中取两数之和等于c的。和上一行的结果是等价的。
+            if (activeLength != nums.length && nums[activeLength] == nums[activeLength - 1]) {
                 return;
             }
 
@@ -82,10 +87,28 @@ public class CopyGoodSolution {
         method(false, nums, activeLength - 1, activeTupleLength, target, pathIndex);
         // 从nums[0]到nums[activeLength - 2]的子串结果已经出了
         // 如何判断nums[activeLength - 1]可以是构成答案的一部分：
-//        if (nums[activeLength - 1] < target) {
-        memoryPath[pathIndex] = nums[activeLength - 1];
-        method(true, nums, activeLength - 1, activeTupleLength - 1, target - nums[activeLength - 1], pathIndex + 1);
-//        }
+        if (checkLast(nums, target, activeLength, activeTupleLength)) {
+            memoryPath[pathIndex] = nums[activeLength - 1];
+            method(true, nums, activeLength - 1, activeTupleLength - 1, target - nums[activeLength - 1], pathIndex + 1);
+        }
+    }
+
+    private boolean checkLast(int[] nums, int target, int activeLength, int activeTupleLength) {
+        int sum = nums[activeLength - 1];
+        for (int i = 0; i < activeTupleLength - 1; i++) {
+            sum += nums[i];
+        }
+
+        if (sum < target) {
+            int sumMax = nums[activeLength - 1];
+            for (int i = 1; i <= activeTupleLength - 1; i++) {
+                sumMax += nums[activeLength - 1 - i];
+            }
+
+            return sumMax >= target;
+        }
+
+        return true;
     }
 
     private void towSum(int[] nums, int activeLength, int target, int pathIndex) {
@@ -99,11 +122,11 @@ public class CopyGoodSolution {
         }
 
         while (leftIndex < rightIndex) {
-            while (rightIndex < activeLength - 1 && nums[rightIndex] == nums[rightIndex + 1]) {
+            while (rightIndex > leftIndex && rightIndex < activeLength - 1 && nums[rightIndex] == nums[rightIndex + 1]) {
                 --rightIndex;
             }
 
-            while (leftIndex > 0 && nums[leftIndex] == nums[leftIndex - 1]) {
+            while (rightIndex > leftIndex && leftIndex > 0 && nums[leftIndex] == nums[leftIndex - 1]) {
                 ++leftIndex;
             }
 
@@ -128,6 +151,8 @@ public class CopyGoodSolution {
     }
 
     public static void main(String[] args) {
+        log.info("{}", new CopyGoodSolution().threeSum(new int[]{-4, -1, -1, 0, 1, 2}));
         log.info("{}", new CopyGoodSolution().threeSum(new int[]{0, 0, 0, 0}));
+        log.info("{}", new CopyGoodSolution().threeSum(new int[]{-2, 0, 0, 2, 2}));
     }
 }
