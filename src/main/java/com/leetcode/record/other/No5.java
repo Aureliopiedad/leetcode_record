@@ -1,11 +1,12 @@
-package com.leetcode.record.no22;
+package com.leetcode.record.other;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
-public class MySolution {
+public class No5 {
     /*
     数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
 
@@ -62,9 +63,9 @@ public class MySolution {
      */
 
     public static void main(String[] args) {
-        log.info("{}", new MySolution().generateParenthesis(1));
-        log.info("{}", new MySolution().generateParenthesis(2));
-        log.info("{}", new MySolution().generateParenthesis(3));
-        log.info("{}", new MySolution().generateParenthesis(4));
+        log.info("{}", new No5().generateParenthesis(1));
+        log.info("{}", new No5().generateParenthesis(2));
+        log.info("{}", new No5().generateParenthesis(3));
+        log.info("{}", new No5().generateParenthesis(4));
     }
 }
