@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class GoodSolution {
-    // todo
     public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
         int[] m1 = maxmin(nums1), m2 = maxmin(nums2);
         int[] m3 = maxmin(nums3), m4 = maxmin(nums4);

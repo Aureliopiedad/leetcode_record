@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 public class MySolution {
-    // todo
     public String largestNumber(int[] nums) {
         for (int i = 0; i < nums.length; i++) {
             for (int j = 0; j < nums.length - 1; j++) {
@@ -22,11 +21,29 @@ public class MySolution {
             }
         }
 
-        return Arrays.stream(nums).mapToObj(String::valueOf).collect(Collectors.joining());
+        boolean checkZero = false;
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < nums.length; i++) {
+            if (i == nums.length - 1) {
+                sb.append(nums[i]);
+                continue;
+            }
+
+            if (nums[i] == 0 && !checkZero) {
+                continue;
+            }
+
+            sb.append(nums[i]);
+            checkZero = true;
+        }
+
+        return sb.toString();
     }
 
     public static void main(String[] args) {
-        log.info("{}", new MySolution().largestNumber(new int[] {10, 2}));
-        log.info("{}", new MySolution().largestNumber(new int[] {3,30,34,5,9}));
+        log.info("{}", new MySolution().largestNumber(new int[]{10, 2}));
+        log.info("{}", new MySolution().largestNumber(new int[]{3, 30, 34, 5, 9}));
+        log.info("{}", new MySolution().largestNumber(new int[]{0, 0}));
     }
 }
